@@ -333,6 +333,11 @@ features=minMaxScaler.fit_transform(features)
 features.shape
 # (1894, 6)
 
+import pickle
+
+with open ('datasets/RecurrenceOfSurgery_scaler.pkl', 'wb') as pkl_scaler :
+    pickle.dump(obj=minMaxScaler, file=pkl_scaler)
+    pass
 #!/usr/bin/env python
 # coding: utf-8
 
