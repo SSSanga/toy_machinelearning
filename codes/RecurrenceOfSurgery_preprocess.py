@@ -296,6 +296,43 @@ df_ROSL
 df_ROSL.isnull().sum() #final
 
 
+# ##### Scaling_MinMax
+# - OneHotEncoder는 수술기법에 적용하려고 했으나 0,l 두개라서 그냥 if 조건으로 돌려버림
+# 
+# ###### 스케일링의 이유:
+# 
+# - 다양한 변수 범위 조정: 다양한 변수의 범위를 조정하여 모든 변수가 동일한 스케일을 가지도록 합니다. 이렇게 하면 모델이 변수 간의 중요도를 쉽게 파악할 수 있습니다.
+# 
+# - 알고리즘 안정성: 일부 머신러닝 알고리즘은 입력 변수의 스케일에 민감할 수 있습니다. 스케일링을 통해 알고리즘의 안정성을 향상시킵니다.
+# 
+# - 수렴 속도 향상: 일부 최적화 알고리즘은 데이터가 스케일링되지 않은 경우 더 빠르게 수렴할 수 있습니다.
+
+# In[42]:
+
+
+target = df_ROSL['Location of herniation']
+features = df_ROSL.drop(columns=['Location of herniation'])
+
+
+# In[43]:
+
+
+from sklearn.preprocessing import MinMaxScaler
+
+
+# In[44]:
+
+
+minMaxScaler=MinMaxScaler()
+
+
+# In[45]:
+
+
+features=minMaxScaler.fit_transform(features)
+features.shape
+
+
 # In[ ]:
 
 
