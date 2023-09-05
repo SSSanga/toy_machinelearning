@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <title>Breast Cancer Prediction</title>
+    <title>RecurrenceOfSurgery_Merge</title>
 </head>
 
 <body>
@@ -65,12 +65,12 @@
  let predictObject = document.querySelector('#predict')
  predictObject.addEventListener('click', (event)=>{
     event.preventDefault();  // submit 정지
-    let ODI = document.querySelector('#ODI').value;
-    let 입원기간 = document.querySelector('#입원기간').value;
-    let 통증기간 = document.querySelector('#통증기간').value;
-    let 수술시간 = document.querySelector('#수술시간').value;
-    let 수술기법 = document.querySelector('#수술기법').value;
-    let Seg_Angle = document.querySelector('#Seg_Angle').value;
+    let ODI = document.querySelector('#ODIInput').value;
+    let 입원기간 = document.querySelector('#입원기간Input').value;
+    let 통증기간 = document.querySelector('#통증기간Input').value;
+    let 수술시간 = document.querySelector('#수술시간Input').value;
+    let 수술기법 = document.querySelector('#수술기법Input').value;
+    let Seg_Angle = document.querySelector('#Seg_AngleInput').value;
 
     let request_dict = {"ODI": ODI
                     , "입원기간":입원기간, "통증기간" : 통증기간, "수술시간" : 수술시간, 
