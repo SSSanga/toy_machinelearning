@@ -325,19 +325,22 @@ from sklearn.preprocessing import MinMaxScaler
 
 minMaxScaler=MinMaxScaler()
 
-
-# In[45]:
-
-
-features=minMaxScaler.fit_transform(features)
-features.shape
-# (1894, 6)
+minmaxScaler=minMaxScaler.fit(features)
 
 import pickle
 
 with open ('datasets/RecurrenceOfSurgery_scaler.pkl', 'wb') as pkl_scaler :
-    pickle.dump(obj=minMaxScaler, file=pkl_scaler)
+    pickle.dump(obj=minmaxScaler, file=pkl_scaler)
     pass
+
+# In[45]:
+
+
+features=minmaxScaler.fit_transform(features)
+features.shape
+# (1894, 6)
+
+
 #!/usr/bin/env python
 # coding: utf-8
 
