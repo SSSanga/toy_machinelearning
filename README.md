@@ -12,7 +12,7 @@
 - 목표변수 (범주형) : 탈출한 디스크의 위치 Location of herniation 1,2,3,4,5
 - 설명변수: ODI, 입원기간, 통증기간, 수술시간, 수술기법, Seg Angle(raw)
 
-#### 전처리 하기 전 결과
+#### 전처리 하기 전 결과 by.하늘 
 
 
 | 비교-순서 | precision | recall | f1-score | support |
@@ -29,7 +29,7 @@ Macro Avg: 0.19, 0.22, 0.16
 
 Weighted Avg: 0.28, 0.45, 0.30
 
-#### 전처리 후 결과
+#### 전처리 후 결과 by.하늘 + 상아
 
 | 비교분류 | precision | recall | f1-score | support |
 |-----------|-----------|---------|----------|----------|
@@ -45,5 +45,19 @@ Macro Avg: 0.58, 0.50, 0.51
 
 Weighted Avg: 0.64, 0.64, 0.63
 
+#### main 이용 by.하늘
 
+🙂 [git_html](https://sssanga.github.io/toy_machinelearning/RecurrenceOfSurgery_Merge.html)
 
+![Alt text](image.png)
+
+- 진행 및 결과
+
+![Alt text](image-1.png)
+    - browser 실행하면 main.py 걸림 
+
+![Alt text](image-2.png)
+    - scaler.pkl 과 model.pkl로 입력값이 들어감
+
+![Alt text](image-3.png)
+    - Location of herniation의 예측값이 출력됨. 
