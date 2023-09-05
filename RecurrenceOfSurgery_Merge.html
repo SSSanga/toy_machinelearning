@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Breast Cancer Prediction</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>RecurrenceOfSurgery_Merge</h1>
+
+        <!-- Form -->
+        <form id="ODI" class="mt-4">
+            <!-- ODI Input -->
+            <div class="mb-3">
+                <label for="ODIInput" class="form-label">ODI:</label>
+                <input type="text" class="form-control" id="ODIInput" name="ODI" required>
+            </div>
+
+            <!-- 입원기간 Input -->
+            <div class="mb-3">
+                <label for="입원기간Input" class="form-label">입원기간:</label>
+                <input type="text" class="form-control" id="입원기간Input" name="입원기간" required>
+            </div>
+
+            <!-- 입원기간 Input -->
+            <div class="mb-3">
+                <label for="통증기간(월)Input" class="form-label">통증기간:</label>
+                <input type="text" class="form-control" id="통증기간Input" name="통증기간" required>
+            </div>
+
+            <!-- 입원기간 Input -->
+            <div class="mb-3">
+                <label for="수술시간Input" class="form-label">수술시간:</label>
+                <input type="text" class="form-control" id="수술시간Input" name="수술시간" required>
+            </div>
+
+            <!-- 입원기간 Input -->
+            <div class="mb-3">
+                <label for="수술기법Input" class="form-label">수술기법:</label>
+                <input type="text" class="form-control" id="수술기법Input" name="수술기법" required>
+            </div>
+
+            <!-- 입원기간 Input -->
+            <div class="mb-3">
+                <label for="Seg_Angle(raw)Input" class="form-label">Seg Angle:</label>
+                <input type="text" class="form-control" id="Seg_AngleInput" name="Seg_Angle" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" id="predict">Predict</button>
+        </form>
+
+        <!-- Result Display -->
+        <div id="resultDisplay" class="mt-4"></div>
+
+    </div>
+</body>
+<script>
+    // id : #, class :. , tag : 그대로 사용
+ let predictObject = document.querySelector('#predict')
+ predictObject.addEventListener('click', (event)=>{
+    event.preventDefault();  // submit 정지
+    let ODI = document.querySelector('#ODI').value;
+    let 입원기간 = document.querySelector('#입원기간').value;
+    let 통증기간 = document.querySelector('#통증기간').value;
+    let 수술시간 = document.querySelector('#수술시간').value;
+    let 수술기법 = document.querySelector('#수술기법').value;
+    let Seg_Angle = document.querySelector('#Seg_Angle').value;
+
+    let request_dict = {"ODI": ODI
+                    , "입원기간":입원기간, "통증기간" : 통증기간, "수술시간" : 수술시간, 
+                    "수술기법" : 수술기법, "Seg_Angle" : Seg_Angle};
+
+    // console.log(`request_dict : ${request_dict}`);
+    // request backend and then return dict
+    // post man의 역할을 함
+    fetch('http://127.0.0.1:8000/api_v1/mlmodelwithregression', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     body: JSON.stringify(request_dict)
+   })
+   .then(response => response.json())
+   .then(data => {
+     console.log(data)
+     // Display the result in the resultDisplay div
+     document.querySelector('#resultDisplay').innerHTML = `Location_of_herniation : ${data.Location_of_herniation}`;
+   })
+   .catch(error => console.error(error));
+
+ });
+</script>
+
+</html>
