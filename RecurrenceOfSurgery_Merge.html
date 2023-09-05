@@ -30,7 +30,7 @@
             <!-- 입원기간 Input -->
             <div class="mb-3">
                 <label for="통증기간(월)Input" class="form-label">통증기간:</label>
-                <input type="text" class="form-control" id="통증기간Input" name="통증기간" required>
+                <input type="text" class="form-control" id="통증기간Input" name="통증기간(월)" required>
             </div>
 
             <!-- 입원기간 Input -->
@@ -73,8 +73,8 @@
     let Seg_Angle = document.querySelector('#Seg_AngleInput').value;
 
     let request_dict = {"ODI": ODI
-                    , "입원기간":입원기간, "통증기간" : 통증기간, "수술시간" : 수술시간, 
-                    "수술기법" : 수술기법, "Seg_Angle" : Seg_Angle};
+                    , "입원기간":입원기간, "통증기간(월)" : 통증기간, "수술시간" : 수술시간, 
+                    "수술기법" : 수술기법, "Seg Angle(raw)" : Seg_Angle};
 
     // console.log(`request_dict : ${request_dict}`);
     // request backend and then return dict
