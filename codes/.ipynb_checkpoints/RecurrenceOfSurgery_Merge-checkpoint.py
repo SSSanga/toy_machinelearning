@@ -10,7 +10,7 @@ import pandas as pd
 # In[2]:
 
 
-df_ROS=pd.read_csv('../datasets/RecurrenceOfSurgery.csv')
+df_ROS=pd.read_csv('datasets/RecurrenceOfSurgery.csv')
 df_ROS
 
 
@@ -77,13 +77,13 @@ df_ROSL['통증기간(월)'].fillna(mean_value, inplace=True)
 # In[11]:
 
 
-median_value=df_ROSL['수술시간'].median()
+mean_time=df_ROSL['수술시간'].mean()
 
 
 # In[12]:
 
 
-df_ROSL['수술시간'].fillna(median_value, inplace=True)
+df_ROSL['수술시간'].fillna(mean_time, inplace=True)
 
 
 # In[13]:
@@ -296,63 +296,6 @@ df_ROSL
 df_ROSL.isnull().sum() #final
 
 
-# In[42]:
-
-
-target_fill = df_ROSL['Location of herniation']
-features_fill = df_ROSL.drop(columns=['Location of herniation'])
-
-
-# ### imbalnce 
-
-# In[43]:
-
-
-from imblearn.under_sampling import TomekLinks
-
-
-# In[44]:
-
-
-features_fill.shape, target_fill.shape
-
-
-# In[45]:
-
-
-from collections import Counter
-
-
-# In[46]:
-
-
-Counter(target_fill) # target의 imbalance check
-
-
-# In[47]:
-
-
-tomekLinks = TomekLinks()
-
-
-# In[48]:
-
-
-features, target = tomekLinks.fit_resample(features_fill, target_fill) ## 데이터를 건드릴때는 features와 target을 동시에 진행해줘야함. 
-
-
-# In[49]:
-
-
-features.shape, target.shape
-
-
-# In[50]:
-
-
-Counter(target)
-
-
 # ##### Scaling_MinMax
 # - OneHotEncoder는 수술기법에 적용하려고 했으나 0,l 두개라서 그냥 if 조건으로 돌려버림
 # 
@@ -364,47 +307,215 @@ Counter(target)
 # 
 # - 수렴 속도 향상: 일부 최적화 알고리즘은 데이터가 스케일링되지 않은 경우 더 빠르게 수렴할 수 있습니다.
 
-# In[51]:
+# In[42]:
+
+
+target = df_ROSL['Location of herniation']
+features = df_ROSL.drop(columns=['Location of herniation'])
+
+
+# In[43]:
 
 
 from sklearn.preprocessing import MinMaxScaler
 
 
-# In[52]:
+# In[44]:
 
 
 minMaxScaler=MinMaxScaler()
 
-
-# In[53]:
-
-
-minmaxScaler = minMaxScaler.fit(features)
-
-
-# In[54]:
-
+minmaxScaler=minMaxScaler.fit(features)
 
 import pickle
 
-
-# In[55]:
-
-
-with open ('../datasets/RecurrenceOfSurgery_scaler.pkl', 'wb') as pkl_scaler :
+with open ('datasets/RecurrenceOfSurgery_scaler.pkl', 'wb') as pkl_scaler :
     pickle.dump(obj=minmaxScaler, file=pkl_scaler)
     pass
 
+# In[45]:
 
-# In[56]:
 
-
-features=minmaxScaler.transform(features)
+features=minmaxScaler.fit_transform(features)
 features.shape
+# (1894, 6)
 
 
-# In[57]:
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
 
 
-df_ROSL.to_csv('../datasets/preprocessedROS.csv')
+# import pandas as pd
+
+
+# In[2]:
+
+
+# df_ROS=pd.read_csv('../datasets/RecurrenceOfSurgery.csv')
+# df_ROS
+
+
+# In[3]:
+
+
+# df_ROSL = df_ROS[['Location of herniation','ODI', '입원기간', '통증기간(월)', '수술시간', '수술기법', 'Seg Angle(raw)' ]]
+df_ROSL[:2]
+
+
+# In[33]:
+
+
+df_ROSL.info()
+
+
+# In[6]:
+
+
+df_ROSL.isnull().sum()
+
+
+# In[7]:
+
+
+df_ROSL_dropna = df_ROSL.dropna()
+print(df_ROSL_dropna.isnull().sum())
+df_ROSL_dropna.info()
+
+
+# #### learning
+# - raw data를 target_train_split를 나눠서 모델 학습 및 GridSearchCV를 하고 평가를 한다. 
+# - 설명변수의 범주형: 수술기법을 제외하고 모델학습시킨다. 
+
+# In[8]:
+
+
+df_ROSL_dropna.columns
+
+
+# In[9]:
+
+
+target = df_ROSL_dropna['Location of herniation']
+features = df_ROSL_dropna[['ODI','입원기간','통증기간(월)','수술시간','Seg Angle(raw)']]
+target.shape, features.shape
+
+
+# In[10]:
+
+
+from sklearn.model_selection import train_test_split
+features_train, features_test, target_train, target_test = train_test_split(features, target, random_state=111)
+features_train.shape, features_test.shape, target_train.shape, target_test.shape
+
+
+# In[11]:
+
+
+from sklearn.tree import DecisionTreeClassifier
+
+
+# In[12]:
+
+
+model = DecisionTreeClassifier()
+
+
+# In[13]:
+
+
+from sklearn.model_selection import GridSearchCV
+
+
+# In[14]:
+
+
+hyper_params = {'min_samples_leaf' : [2, 9], 
+                'max_depth' : [2, 9], 
+                'min_samples_split' : [2, 9]}
+
+
+# #### 평가 score : 분류-정확도, 예측-R squre
+
+# In[15]:
+
+
+from sklearn.metrics import f1_score
+
+
+# In[20]:
+
+
+grid_search = GridSearchCV(model, param_grid = hyper_params, cv=3, verbose=1)
+
+
+# In[21]:
+
+
+grid_search.fit(features_train, target_train)
+
+
+# In[22]:
+
+
+grid_search.best_estimator_
+
+
+# In[23]:
+
+
+grid_search.best_score_, grid_search.best_params_
+
+
+# In[24]:
+
+
+best_model = grid_search.best_estimator_
+best_model
+
+
+# In[25]:
+
+
+target_test_predict = best_model.predict(features_test)
+target_test_predict
+
+
+# In[26]:
+
+
+from sklearn.metrics import classification_report
+
+
+# In[27]:
+
+
+print(classification_report(target_test, target_test_predict))
+
+
+# In[29]:
+
+
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score
+
+
+# In[31]:
+
+
+print(confusion_matrix(target_test, target_test_predict))
+
+
+# ### 전처리랑 학습 파일 합쳐서 서비스 작성하기
+
+# In[ ]:
+
+
+
+
+
+
+
+
+
 
