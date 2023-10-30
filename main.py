@@ -34,6 +34,8 @@ def mlmodelwithregression(data:dict) :
     Seg_Angle = float(data['Seg Angle(raw)'])
 
     # pkl 파일 존재 확인 코드 필요
+    
+    # sclaer pkl
     with open('datasets/RecurrenceOfSurgery_scaler.pkl', 'rb') as scaler_file: 
         loaded_scaler = pickle.load(scaler_file)
         input_scaler = [[ODI, 입원기간, 통증기간, 수술시간, 수술기법, Seg_Angle]]
