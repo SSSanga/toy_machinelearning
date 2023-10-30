@@ -50,6 +50,7 @@ Weighted Avg: 0.64, 0.64, 0.63
 🙂 [git_html](https://sssanga.github.io/toy_machinelearning/RecurrenceOfSurgery_Merge.html)
 
 ![Alt text](image.png)
+![Alt text](toy_machinelearning.gif)
 
 - 진행 및 결과
 
